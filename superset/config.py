@@ -235,14 +235,14 @@ SQLALCHEMY_ENCRYPTED_FIELD_TYPE_ADAPTER = (  # pylint: disable=invalid-name
 QUERY_SEARCH_LIMIT = 1000
 
 # Flask-WTF flag for CSRF
-WTF_CSRF_ENABLED = True
+# WTF_CSRF_ENABLED = True
 
 # Add endpoints that need to be exempt from CSRF protection
-WTF_CSRF_EXEMPT_LIST = [
-    "superset.views.core.log",
-    "superset.views.core.explore_json",
-    "superset.charts.data.api.data",
-]
+# WTF_CSRF_EXEMPT_LIST = [
+#     "superset.views.core.log",
+#     "superset.views.core.explore_json",
+#     "superset.charts.data.api.data",
+# ]
 
 # Whether to run the web server in debug mode or not
 DEBUG = os.environ.get("FLASK_DEBUG")
@@ -338,7 +338,7 @@ AUTH_TYPE = AUTH_DB
 # Grant public role the same set of permissions as for a selected builtin role.
 # This is useful if one wants to enable anonymous users to view
 # dashboards. Explicit grant on specific datasets is still required.
-PUBLIC_ROLE_LIKE: str | None = None
+# PUBLIC_ROLE_LIKE: str | None = None
 
 # ---------------------------------------------------
 # Babel config for translations
@@ -518,7 +518,7 @@ DEFAULT_FEATURE_FLAGS.update(
 )
 
 # This is merely a default.
-FEATURE_FLAGS: dict[str, bool] = {}
+# FEATURE_FLAGS: dict[str, bool] = {}
 
 # A function that receives a dict of all feature flags
 # (DEFAULT_FEATURE_FLAGS merged with FEATURE_FLAGS)
@@ -724,7 +724,7 @@ EXPLORE_FORM_DATA_CACHE_CONFIG: CacheConfig = {
 STORE_CACHE_KEYS_IN_METADATA_DB = False
 
 # CORS Options
-ENABLE_CORS = False
+# ENABLE_CORS = False
 CORS_OPTIONS: dict[Any, Any] = {}
 
 # Sanitizes the HTML content used in markdowns to allow its rendering in a safe manner.
@@ -951,8 +951,8 @@ CELERY_CONFIG = CeleryConfig  # pylint: disable=invalid-name
 # OVERRIDE_HTTP_HEADERS: sets override values for HTTP headers. These values will
 # override anything set within the app
 DEFAULT_HTTP_HEADERS: dict[str, Any] = {}
-OVERRIDE_HTTP_HEADERS: dict[str, Any] = {}
-HTTP_HEADERS: dict[str, Any] = {}
+# OVERRIDE_HTTP_HEADERS: dict[str, Any] = {}
+# HTTP_HEADERS: dict[str, Any] = {}
 
 # The db id here results in selecting this one as a default in SQL Lab
 DEFAULT_DB_ID = None
@@ -1405,7 +1405,7 @@ TEST_DATABASE_CONNECTION_TIMEOUT = timedelta(seconds=30)
 CONTENT_SECURITY_POLICY_WARNING = True
 
 # Do you want Talisman enabled?
-TALISMAN_ENABLED = utils.cast_to_boolean(os.environ.get("TALISMAN_ENABLED", True))
+# TALISMAN_ENABLED = utils.cast_to_boolean(os.environ.get("TALISMAN_ENABLED", True))
 
 # If you want Talisman, how do you want it configured??
 TALISMAN_CONFIG = {
@@ -1474,7 +1474,7 @@ TALISMAN_DEV_CONFIG = {
 #
 SESSION_COOKIE_HTTPONLY = True  # Prevent cookie from being read by frontend JS?
 SESSION_COOKIE_SECURE = False  # Prevent cookie from being transmitted over non-tls?
-SESSION_COOKIE_SAMESITE: Literal["None", "Lax", "Strict"] | None = "Lax"
+# SESSION_COOKIE_SAMESITE: Literal["None", "Lax", "Strict"] | None = "Lax"
 # Whether to use server side sessions from flask-session or Flask secure cookies
 SESSION_SERVER_SIDE = False
 # Example config using Redis as the backend for server side sessions
@@ -1558,11 +1558,11 @@ GLOBAL_ASYNC_QUERIES_POLLING_DELAY = int(
 GLOBAL_ASYNC_QUERIES_WEBSOCKET_URL = "ws://127.0.0.1:8080/"
 
 # Embedded config options
-GUEST_ROLE_NAME = "Public"
+# GUEST_ROLE_NAME = "Public"
 GUEST_TOKEN_JWT_SECRET = "test-guest-secret-change-me"
 GUEST_TOKEN_JWT_ALGO = "HS256"
 GUEST_TOKEN_HEADER_NAME = "X-GuestToken"
-GUEST_TOKEN_JWT_EXP_SECONDS = 300  # 5 minutes
+# GUEST_TOKEN_JWT_EXP_SECONDS = 300  # 5 minutes
 # Guest token audience for the embedded superset, either string or callable
 GUEST_TOKEN_JWT_AUDIENCE: Callable[[], str] | str | None = None
 
@@ -1683,6 +1683,36 @@ class ExtraDynamicQueryFilters(TypedDict, total=False):
 
 
 EXTRA_DYNAMIC_QUERY_FILTERS: ExtraDynamicQueryFilters = {}
+
+SESSION_COOKIE_SAMESITE = None
+
+FEATURE_FLAGS = { "EMBEDDED_SUPERSET": True }
+
+ENABLE_CORS = True
+CORS_OPTIONS = {
+    "supports_credentials": True,
+    "allow_headers": ["*"],
+    "resources": ["*"],
+    'origins': ['*'],
+}
+
+GUEST_ROLE_NAME= 'Gamma'
+GUEST_TOKEN_JWT_EXP_SECONDS = 3600  # 1 hour
+PUBLIC_ROLE_LIKE = "Gamma"
+
+# Allow embedding in iframes from any origin (probably want to restrict this for production)
+
+# Flask-WTF flag for CSRF
+WTF_CSRF_ENABLED = False
+# Add endpoints that need to be exempt from CSRF protection (restrict for production)
+WTF_CSRF_EXEMPT_LIST = ['*']
+# # A CSRF token that expires in 1 year
+# WTF_CSRF_TIME_LIMIT = 60 * 60 * 24 * 365
+# Set this API key to enable Mapbox visualizations
+# MAPBOX_API_KEY = ''
+OVERRIDE_HTTP_HEADERS = {'X-Frame-Options': 'ALLOWALL'}
+TALISMAN_ENABLED = False
+HTTP_HEADERS={"X-Frame-Options":"ALLOWALL"}
 
 
 # -------------------------------------------------------------------
